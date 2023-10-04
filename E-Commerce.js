@@ -1,3 +1,5 @@
+const readline = require('readline');
+
 class Product {
   constructor(name, price, available) {
     this.name = name;
@@ -72,14 +74,50 @@ const products = [
 
 const cart = new ShoppingCart();
 
-// Sample interactions (you can replace these with user input)
-cart.addProduct("Laptop", 2);
-cart.addProduct("Headphones", 1);
-cart.addProduct("Tablet", 3);
-cart.viewCart();
-cart.removeProduct("Tablet");
-cart.viewCart();
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
-// Calculate and display the total bill
-const totalBill = cart.calculateTotalBill();
-console.log(`Your total bill is $${totalBill}.`);
+function promptForAction() {
+  rl.question('Enter action (add/remove/view/quit): ', (action) => {
+    if (action === 'add') {
+      promptAddProduct();
+    } else if (action === 'remove') {
+      promptRemoveProduct();
+    } else if (action === 'view') {
+      cart.viewCart();
+      promptForAction();
+    } else if (action === 'quit') {
+      rl.close();
+    } else {
+      console.log('Invalid action. Please enter add/remove/view/quit.');
+      promptForAction();
+    }
+  });
+}
+
+function promptAddProduct() {
+  rl.question('Enter product name: ', (productName) => {
+    rl.question('Enter quantity: ', (quantityStr) => {
+      const quantity = parseInt(quantityStr, 10);
+      if (!isNaN(quantity)) {
+        cart.addProduct(productName, quantity);
+        promptForAction();
+      } else {
+        console.log('Invalid quantity. Please enter a valid number.');
+        promptAddProduct();
+      }
+    });
+  });
+}
+
+function promptRemoveProduct() {
+  rl.question('Enter product name to remove: ', (productName) => {
+    cart.removeProduct(productName);
+    promptForAction();
+  });
+}
+
+console.log('Welcome to the E-commerce Cart System!');
+promptForAction();
