@@ -13,6 +13,10 @@ class CartItem {
     this.product = product;
     this.quantity = quantity;
   }
+
+  getTotalPrice() {
+    return this.product.price * this.quantity;
+  }
 }
 
 class ShoppingCart {
@@ -55,7 +59,7 @@ class ShoppingCart {
   calculateTotalBill() {
     let total = 0;
     for (const cartItem of this.cart) {
-      total += cartItem.product.price * cartItem.quantity;
+      total += cartItem.getTotalPrice();
     }
     return total;
   }
@@ -80,7 +84,7 @@ const rl = readline.createInterface({
 });
 
 function promptForAction() {
-  rl.question('Enter action (add/remove/view/quit): ', (action) => {
+  rl.question('Enter action (add/remove/view/checkout/quit): ', (action) => {
     if (action === 'add') {
       promptAddProduct();
     } else if (action === 'remove') {
@@ -88,10 +92,14 @@ function promptForAction() {
     } else if (action === 'view') {
       cart.viewCart();
       promptForAction();
+    } else if (action === 'checkout') {
+      const totalBill = cart.calculateTotalBill();
+      console.log(`Your total bill is $${totalBill}.`);
+      promptForAction();
     } else if (action === 'quit') {
       rl.close();
     } else {
-      console.log('Invalid action. Please enter add/remove/view/quit.');
+      console.log('Invalid action. Please enter add/remove/view/checkout/quit.');
       promptForAction();
     }
   });
