@@ -50,7 +50,7 @@ class ShoppingCart {
   }
 
   viewCart() {
-    console.log("Cart Items:");
+    console.log("Your Cart Items:");
     for (const cartItem of this.cart) {
       console.log(`${cartItem.product.name} x${cartItem.quantity}`);
     }
@@ -84,22 +84,22 @@ const rl = readline.createInterface({
 });
 
 function promptForAction() {
-  rl.question('Enter action (add/remove/view/checkout/quit): ', (action) => {
-    if (action === 'add') {
+  rl.question('Enter action (add/remove/view/bill/quit): ', (action) => {
+    if (action.toLowerCase() === 'add') {
       promptAddProduct();
-    } else if (action === 'remove') {
+    } else if (action.toLowerCase() === 'remove') {
       promptRemoveProduct();
-    } else if (action === 'view') {
+    } else if (action.toLowerCase() === 'view') {
       cart.viewCart();
       promptForAction();
-    } else if (action === 'checkout') {
+    } else if (action.toLowerCase() === 'bill') {
       const totalBill = cart.calculateTotalBill();
       console.log(`Your total bill is $${totalBill}.`);
       promptForAction();
     } else if (action === 'quit') {
       rl.close();
     } else {
-      console.log('Invalid action. Please enter add/remove/view/checkout/quit.');
+      console.log('Invalid action. Please enter add/remove/view/bill/quit.');
       promptForAction();
     }
   });
@@ -127,5 +127,5 @@ function promptRemoveProduct() {
   });
 }
 
-console.log('Welcome to the E-commerce Cart System!');
+console.log('JS E-Commerce System');
 promptForAction();
