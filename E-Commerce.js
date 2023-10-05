@@ -78,9 +78,9 @@ class ShoppingCart {
 
 // Sample products with discount percentages.
 const products = [
-  new Product("Laptop", 1000, true, 10),      // 10% discount
-  new Product("Headphones", 50, true, 5),     // 5% discount
-  new Product("Tablet", 300, true),          // No discount
+  new Product("Laptop", 60000, true, 10),      // 10% discount
+  new Product("Headphones", 200, true, 5),     // 5% discount
+  new Product("Tablet", 35000, true),          // No discount
 ];
 
 const cart = new ShoppingCart();
