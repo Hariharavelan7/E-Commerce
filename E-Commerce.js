@@ -108,7 +108,7 @@ function promptForAction() {
 function promptAddProduct() {
   rl.question('Enter product name: ', (productName) => {
     rl.question('Enter quantity: ', (quantityStr) => {
-      const quantity = parseInt(quantityStr, 10);
+      const quantity = Number(quantityStr);
       if (!isNaN(quantity)) {
         cart.addProduct(productName, quantity);
         promptForAction();
