@@ -1,10 +1,16 @@
 const readline = require('readline');
 
 class Product {
-  constructor(name, price, available) {
+  constructor(name, price, available, discountPercentage = 0) {
     this.name = name;
     this.price = price;
     this.available = available;
+    this.discountPercentage = discountPercentage;
+  }
+
+  calculateDiscountedPrice() {
+    const discountAmount = (this.discountPercentage / 100) * this.price;
+    return this.price - discountAmount;
   }
 }
 
@@ -15,7 +21,8 @@ class CartItem {
   }
 
   getTotalPrice() {
-    return this.product.price * this.quantity;
+    const discountedPrice = this.product.calculateDiscountedPrice();
+    return discountedPrice * this.quantity;
   }
 }
 
@@ -50,7 +57,7 @@ class ShoppingCart {
   }
 
   viewCart() {
-    console.log("Your Cart Items:");
+    console.log("Cart Items:");
     for (const cartItem of this.cart) {
       console.log(`${cartItem.product.name} x${cartItem.quantity}`);
     }
@@ -69,11 +76,11 @@ class ShoppingCart {
   }
 }
 
-// Sample products
+// Sample products with discount percentages.
 const products = [
-  new Product("Laptop", 1000, true),
-  new Product("Headphones", 50, true),
-  new Product("Tablet", 300, true),
+  new Product("Laptop", 1000, true, 10),      // 10% discount
+  new Product("Headphones", 50, true, 5),     // 5% discount
+  new Product("Tablet", 300, true),          // No discount
 ];
 
 const cart = new ShoppingCart();
@@ -84,25 +91,34 @@ const rl = readline.createInterface({
 });
 
 function promptForAction() {
-  rl.question('Enter action (add/remove/view/bill/quit): ', (action) => {
-    if (action.toLowerCase() === 'add') {
+  rl.question('Enter action (add/remove/view/bill/finish): ', (action) => {
+    if (action.toLowerCase() === 'a') {
       promptAddProduct();
-    } else if (action.toLowerCase() === 'remove') {
+    } else if (action.toLowerCase() === 'r') {
       promptRemoveProduct();
-    } else if (action.toLowerCase() === 'view') {
+    } else if (action.toLowerCase() === 'v') {
       cart.viewCart();
       promptForAction();
-    } else if (action.toLowerCase() === 'bill') {
+    } else if (action.toLowerCase() === 'b') {
       const totalBill = cart.calculateTotalBill();
-      console.log(`Your total bill is $${totalBill}.`);
+      console.log(`Your total bill is $${totalBill.toFixed(2)}.`);
+      displayDiscountedPrices(); // Display discounted prices
       promptForAction();
-    } else if (action === 'quit') {
+    } else if (action === 'f') {
       rl.close();
     } else {
       console.log('Invalid action. Please enter add/remove/view/bill/quit.');
       promptForAction();
     }
   });
+}
+
+function displayDiscountedPrices() {
+  console.log("\nDiscounted Prices:");
+  for (const product of products) {
+    const discountedPrice = product.calculateDiscountedPrice();
+    console.log(`${product.name}: $${discountedPrice.toFixed(2)}`);
+  }
 }
 
 function promptAddProduct() {
