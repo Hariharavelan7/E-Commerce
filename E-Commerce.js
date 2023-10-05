@@ -91,20 +91,20 @@ const rl = readline.createInterface({
 });
 
 function promptForAction() {
-  rl.question('Enter action (add/remove/view/bill/finish): ', (action) => {
-    if (action.toLowerCase() === 'a') {
+  rl.question('Enter action \n1.add\n2.remove\n3.view\n4.bill\n5.finish\nEnter Your Choice : ', (action) => {
+    if (action == 1) {
       promptAddProduct();
-    } else if (action.toLowerCase() === 'r') {
+    } else if (action == 2) {
       promptRemoveProduct();
-    } else if (action.toLowerCase() === 'v') {
+    } else if (action == 3) {
       cart.viewCart();
       promptForAction();
-    } else if (action.toLowerCase() === 'b') {
+    } else if (action == 4) {
       const totalBill = cart.calculateTotalBill();
       console.log(`Your total bill is $${totalBill.toFixed(2)}.`);
       displayDiscountedPrices(); // Display discounted prices
       promptForAction();
-    } else if (action === 'f') {
+    } else if (action == 5) {
       rl.close();
     } else {
       console.log('Invalid action. Please enter add/remove/view/bill/quit.');
@@ -143,5 +143,5 @@ function promptRemoveProduct() {
   });
 }
 
-console.log('JS E-Commerce System');
+console.log('JS E-Commerce System\n Our products are\n 1.Laptop - Rs.60000 with 10% discount\n 2.Headphones - Rs.200 Only fixed price\n 3.Tablet - Rs.35000 with 5% discount');
 promptForAction();
